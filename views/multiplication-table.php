@@ -8,6 +8,8 @@
 </head>
 
 <body>
+    <?php headerTemplete() ?>
+
     <form action="/multiplication-table/calc" method="GET">
         <label for="number">Number</label>
         <input type="number" name="number" id="number" require />
