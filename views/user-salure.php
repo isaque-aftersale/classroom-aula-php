@@ -8,20 +8,24 @@
 </head>
 
 <body>
-    <?php headerTemplete() ?>
+    <?php headerTemplate() ?>
 
     <form action="/user-salure/calc" method="GET">
         <div>
             <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" placeholder="John sales" require />
+            <input type="text" id="name" name="name" placeholder="John sales" />
         </div>
         <div>
             <label for="age">Age</label>
-            <input type="Number" id="age" name="age" placeholder="43" require />
+            <input type="Number" id="age" name="age" placeholder="43" />
         </div>
         <button>!! Hello !!</button>
     </form>
 
+
+    <?php if (!empty($error)): ?>
+        <p><?= $error ?></p>
+    <?php endif; ?>
 
     <?php if (!empty($message)): ?>
         <p><?= $message ?></p>

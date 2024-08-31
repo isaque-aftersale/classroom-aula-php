@@ -8,18 +8,20 @@
 </head>
 
 <body>
-    <?php headerTemplete() ?>
+    <?php headerTemplate() ?>
 
     <form action="/multiplication-table/calc" method="GET">
         <label for="number">Number</label>
-        <input type="number" name="number" id="number" require />
+        <input type="number" name="number" id="number" />
         <button>Calculate</button>
     </form>
 
-    <?php if (!empty($multiplecationTable)): ?>
-        <?php foreach ($multiplecationTable as $calc): ?>
-            <p><?= $calc['value1'] ?> * <?= $calc['value2'] ?> = <?= $calc['result'] ?> </p>
-        <?php endforeach ?>
+    <?php if (!empty($error)): ?>
+        <p><?= $error ?></p>
+    <?php endif; ?>
+
+    <?php if (!empty($message)): ?>
+        <p><?= $message ?></p>
     <?php endif; ?>
 </body>
 

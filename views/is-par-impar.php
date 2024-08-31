@@ -8,17 +8,21 @@
 </head>
 
 <body>
-    <?php headerTemplete() ?>
+    <?php headerTemplate() ?>
 
 
     <form action="/is-par-or-impar/calc" method="GET">
         <label for="number">Number</label>
-        <input type="number" name="number" id="number" required />
+        <input type="number" name="number" id="number" />
         <button>This Number Par or Impar ?</button>
     </form>
 
-    <?php if (!empty($response)): ?>
-        <p><?= $response ?></p>
+    <?php if (!empty($error)): ?>
+        <p><?= $error ?></p>
+    <?php endif; ?>
+
+    <?php if (!empty($message)): ?>
+        <p><?= $message ?></p>
     <?php endif; ?>
 </body>
 

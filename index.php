@@ -7,45 +7,38 @@ class Controllers
 {
     public static function multiplicationTableController(): void
     {
-        $multiplecationTable = [];
+        $message = null;
         $number = $_GET['number'] ?? null;
 
-        if (empty($number)) return;
-
-
-        for ($i = 0; $i <= 10; $i++) {
-            $multiplecationTable[] = [
-                "value1" => $number,
-                "value2" => $i,
-                "result" => intval($number) * $i
-            ];
+        if (empty($number)) {
+            view(ViewEnum::MULTIPLICATION_TABLE, [
+                'error' => "Field number is required"
+            ]);
         }
 
-        compact($multiplecationTable);
+        for ($i = 0; $i <= 10; $i++) {
+            $res = intval($number) * $i;
 
-        require_once("./views/multiplication-table.php");
+            $message .= "$number * $i = $res </br>";
+        }
+
+        view(ViewEnum::MULTIPLICATION_TABLE, compact('message'));
     }
 
     public static function isParOrImparController(): void
     {
-        $response = null;
+        $message = null;
         $number = $_GET['number'] ?? null;
 
         if ($number % 2) {
-            $response = "This number is Impar";
+            $message = "This number is Impar";
+        } else if (empty($number)) {
+            $message = "This number is zero";
+        } else if (!($number % 2)) {
+            $message = "This number is Par";
         }
 
-        if (!($number % 2)) {
-            $response = "This number is Par";
-        }
-
-        if (empty($number)) {
-            $response = "This number is zero";
-        }
-
-        compact('response');
-
-        require_once("./views/is-par-impar.php");
+        view(ViewEnum::IS_PAR_IMPAR, compact('message'));
     }
 
     public static function userSalureController(): void
@@ -54,80 +47,144 @@ class Controllers
         $name = $_GET['name'] ?? null;
         $age = $_GET['age'] ?? null;
 
-        if ($age > 18) {
-            $message = "$name é maior de 18 e tem $age Anos.";
-        }
-
-        if ($age < 18) {
-            $message = "$name não é maior de 18 e tem $age Anos.";
-        }
-
-        if ($age == 18) {
-            $message = "$name tem 18 Anos.";
-        }
-
         if (empty($name)) {
-            $message = "User name not defined";
+            $error = "User name not defined";
+            view(ViewEnum::USER_SALURE, compact('error'));
         }
 
         if (empty($age)) {
-            $message = "User age not defined";
+            $error = "User age not defined";
+            view(ViewEnum::USER_SALURE, compact('error'));
         }
 
         if (!is_numeric($age)) {
-            $message = "User age it should integer";
+            $error = "User age it should integer";
+            view(ViewEnum::USER_SALURE, compact('error'));
         }
 
-        compact('message');
+        if ($age > 18) {
+            $message = "$name é maior de 18 e tem $age Anos.";
+        } else if ($age < 18) {
+            $message = "$name não é maior de 18 e tem $age Anos.";
+        } else if ($age == 18) {
+            $message = "$name tem 18 Anos.";
+        }
 
-        require_once("./views/user-salure.php");
+        view(ViewEnum::USER_SALURE, compact('message'));
+    }
+
+    public static function calculateRectangleAreaController(): void
+    {
+        $width = get('width');
+        $height = get('height');
+
+        if (empty($width)) {
+            $error = 'Field width is required';
+            view(ViewEnum::CALCULATE_RECTANGLE_AREA, compact('error'));
+        }
+
+        if (empty($width)) {
+            $error = 'Field height is required';
+            view(ViewEnum::CALCULATE_RECTANGLE_AREA, compact('error'));
+        }
+
+        if (!is_numeric($width)) {
+            $error = 'Field width expected numeric value';
+            view(ViewEnum::CALCULATE_RECTANGLE_AREA, compact('error'));
+        }
+
+        if (!is_numeric($height)) {
+            $error = 'Field height expected numeric value';
+            view(ViewEnum::CALCULATE_RECTANGLE_AREA, compact('error'));
+        }
+
+        $area = (floatval($width) * floatval($height)) . 'm²';
+
+        view(ViewEnum::CALCULATE_RECTANGLE_AREA, compact('area'));
     }
 }
 
 if (isGetOnPath('/')) {
-    $url = 'https://classroom.google.com/c/Njk4MjEwNjA5ODY2/a/NzAyMzcxODA0ODQz/details';
-    $releases = [
-        "<a href='$url'>Atividade1 PHP</a>",
-        "Multiplication Table",
-        "Number is Par or Impar",
-        "User Salure"
+    $menu = [];
+
+    $menu[] = [
+        'path' => EndPointEnum::MULTIPLICATION_TABLE,
+        'text' => 'Multiplication Table',
+        'br' => 'BR.: Retorna a tabuada a partir de um número decimal',
+        'us' => 'US.: Return an multiplication table of decimal number'
     ];
 
-    require_once("./views/home.php");
+    $menu[] = [
+        'path' => EndPointEnum::IS_PAR_OR_IMPAR,
+        'text' => 'Number is Par or Impar',
+        'br' => 'BR.: Verificar se um número é impar ou par',
+        'us' => 'US.: Cheking if number is impar or par'
+    ];
+
+    $menu[] = [
+        'path' => EndPointEnum::USER_SALURE,
+        'text' => 'User Salure',
+        'br' => 'BR.: Fazer uma saldação para o usuário',
+        'us' => 'US.: Make salure to user'
+    ];
+
+    $menu[] = [
+        'path' => EndPointEnum::CALCULATE_RECTANGLE_AREA,
+        'text' => 'Calculate Rectangle Area',
+        'br' => 'BR.: Calcular area de um retangulo',
+        'us' => 'US.: Calculate rectangle area'
+    ];
+
+    $releases = [
+        'Calculate Rectangle Area',
+        'Number is Par or Impar'
+    ];
+
+    view('home', compact('menu', 'releases'));
     return;
 }
 
-if (isGetOnPath('/multiplication-table')) {
-    require_once("./views/multiplication-table.php");
+if (isGetOnPath(EndPointEnum::MULTIPLICATION_TABLE)) {
+    view("multiplication-table");
     return;
 }
 
-if (isGetOnPath('/multiplication-table/calc')) {
+if (isGetOnPath(EndPointEnum::MULTIPLICATION_TABLE_CALC)) {
     Controllers::multiplicationTableController();
     return;
 }
 
 
-if (isGetOnPath('/is-par-or-impar')) {
-    require_once("./views/is-par-impar.php");
+if (isGetOnPath(EndPointEnum::IS_PAR_OR_IMPAR)) {
+    view("is-par-impar");
     return;
 }
 
-if (isGetOnPath('/is-par-or-impar/calc')) {
+if (isGetOnPath(EndPointEnum::IS_PAR_OR_IMPAR_CALC)) {
     Controllers::isParOrImparController();
     return;
 }
 
-if (isGetOnPath('/user-salure')) {
-    require_once("./views/user-salure.php");
+if (isGetOnPath(EndPointEnum::USER_SALURE)) {
+    view("user-salure");
     return;
 }
 
-if (isGetOnPath('/user-salure/calc')) {
+if (isGetOnPath(EndPointEnum::USER_SALURE_CALC)) {
     Controllers::userSalureController();
     return;
 }
 
+if (isGetOnPath(EndPointEnum::CALCULATE_RECTANGLE_AREA)) {
+    view(ViewEnum::CALCULATE_RECTANGLE_AREA);
+    return;
+}
+
+if (isGetOnPath(EndPointEnum::CALCULATE_RECTANGLE_AREA_CALC)) {
+    Controllers::calculateRectangleAreaController();
+    return;
+}
+
 echo "404 Not Found";
-headerTemplete();
+headerTemplate();
 http_response_code(404);

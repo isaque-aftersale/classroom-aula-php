@@ -23,31 +23,22 @@
     <h1>Home Page</h1>
 
     <ul>
-        <li>
-            <a href="/multiplication-table">Multiplication Table</a>
-            <span>BR.: Retorna a tabuada a partir de um número decimal</span>
-            <span>US.: Return an multiplication table of decimal number</span>
-        </li>
-        <li>
-            <a href="/is-par-or-impar">Number is Par or Impar</a>
-            <span>BR.: Verificar se um número é impar ou par</span>
-            <span>US.: Cheking if number is impar or par</span>
-        </li>
-        <li>
-            <a href="/user-salure">User Salure</a>
-            <span>BR.: Fazer uma saldação para o usuário</span>
-            <span>US.: Make salure to user</span>
-        </li>
+        <?php foreach ($menu as $key => $item): ?>
+            <li>
+                <a href="<?= $item['path'] ?>"><?= $item['text'] ?></a>
+                <span><?= $item['br'] ?></span>
+                <span><?= $item['us'] ?></span>
+            </li>
+        <?php endforeach; ?>
     </ul>
 
-    <?php if (!empty($releases)): ?>
-        <h3>Releases / Novo</h3>
+    <h3>Releases / Novo</h3>
+    <ol>
         <?php foreach ($releases as $release): ?>
-            <ol>
-                <li><?= $release ?></li>
-            </ol>
+            <li><?= $release ?></li>
         <?php endforeach; ?>
-    <?php endif; ?>
+    </ol>
+
 </body>
 
 </html>
