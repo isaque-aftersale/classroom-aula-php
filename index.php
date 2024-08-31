@@ -102,6 +102,55 @@ class Controllers
 
         view(ViewEnum::CALCULATE_RECTANGLE_AREA, compact('area'));
     }
+
+    public static function basicCalculatorController(): void
+    {
+        $value1 = post('value1');
+        $value2 = post('value2');
+        $operator = post('operator');
+
+        if (is_numeric($value1)) {
+            $error = "Field value 1 expected numeric";
+            view(ViewEnum::BASIC_CALCULATOR, compact('error'));
+        }
+
+        if (is_numeric($value2)) {
+            $error = "Field value 2 expected numeric";
+            view(ViewEnum::BASIC_CALCULATOR, compact('error'));
+        }
+
+        if (!empty($value1)) {
+            $error = "Field value 1 is required";
+            view(ViewEnum::BASIC_CALCULATOR, compact('error'));
+        }
+
+        if (!empty($value2)) {
+            $error = "Field value 2 is required";
+            view(ViewEnum::BASIC_CALCULATOR, compact('error'));
+        }
+
+        if (!empty($operator)) {
+            $error = "Field operator is required";
+            view(ViewEnum::BASIC_CALCULATOR, compact('error'));
+        }
+
+        $value1 = intval($value1);
+        $value2 = intval($value2);
+
+        $calc = match ($operator) {
+            '+' => $value1 + $value2,
+            '-' => $value1 - $value2,
+            '*' => $value1 * $value2,
+            '^' => $value1 ^ $value2,
+            '%' => $value1 % $value2,
+            '/' => $value1 / $value2,
+            default => view(ViewEnum::BASIC_CALCULATOR, ['error' => "Field operator is required"]),
+        };
+
+        $result =  "$value1 $operator $value2 = $calc";
+       
+        view(ViewEnum::BASIC_CALCULATOR, compact('result'));
+    }
 }
 
 if (isGetOnPath('/')) {
@@ -135,9 +184,17 @@ if (isGetOnPath('/')) {
         'us' => 'US.: Calculate rectangle area'
     ];
 
+    $menu[] = [
+        'path' => EndPointEnum::BASIC_CALCULATOR,
+        'text' => 'Basic Calculator',
+        'br' => 'BR.: Calculadora basica de dois números',
+        'us' => 'US.: Basic calculator of two numbers'
+    ];
+
     $releases = [
         'Calculate Rectangle Area',
-        'Number is Par or Impar'
+        'Number is Par or Impar',
+        'Basic Calculator'
     ];
 
     view('home', compact('menu', 'releases'));
@@ -175,13 +232,14 @@ if (isGetOnPath(EndPointEnum::USER_SALURE_CALC)) {
     return;
 }
 
-if (isGetOnPath(EndPointEnum::CALCULATE_RECTANGLE_AREA)) {
-    view(ViewEnum::CALCULATE_RECTANGLE_AREA);
+if (isGetOnPath(EndPointEnum::BASIC_CALCULATOR)) {
+    view(ViewEnum::BASIC_CALCULATOR);
     return;
 }
 
-if (isGetOnPath(EndPointEnum::CALCULATE_RECTANGLE_AREA_CALC)) {
-    Controllers::calculateRectangleAreaController();
+
+if (isPostOnPath(EndPointEnum::BASIC_CALCULATOR)) {
+    Controllers::basicCalculatorController();
     return;
 }
 

@@ -25,4 +25,5 @@ enum ViewEnum
     const IS_PAR_IMPAR = 'is-par-impar';
     const USER_SALURE = 'user-salure';
     const CALCULATE_RECTANGLE_AREA = 'calculate-rectangle-area';
+    const BASIC_CALCULATOR = 'basic-calculator';
 }
