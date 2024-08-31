@@ -31,4 +31,5 @@ enum EndPointEnum
     const CALCULATE_RECTANGLE_AREA = '/calculate-rectangle-area';
     const CALCULATE_RECTANGLE_AREA_CALC = '/calculate-rectangle-area/calc';
     const BASIC_CALCULATOR = '/basic-calculator';
+    const BASIC_CALCULATOR_CALC = '/basic-calculator/calc';
 }

@@ -10,7 +10,7 @@
 <body>
     <?= headerTemplate() ?>
 
-    <form action="<?php EndPointEnum::BASIC_CALCULATOR ?>" method="POST">
+    <form action="<?php EndPointEnum::BASIC_CALCULATOR_CALC ?>" method="GET">
         <div>
             <label for="value1">Value 1</label>
             <input type="number" id="value1" name="value1" />
@@ -31,7 +31,6 @@
         <button>Calcular</button>
     </form>
 
-    <?= $result ?>
     <?= when(!empty($result), fn() => $result) ?>
 </body>
 

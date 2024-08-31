@@ -105,9 +105,9 @@ class Controllers
 
     public static function basicCalculatorController(): void
     {
-        $value1 = post('value1');
-        $value2 = post('value2');
-        $operator = post('operator');
+        $value1 = get('value1');
+        $value2 = get('value2');
+        $operator = get('operator');
 
         if (is_numeric($value1)) {
             $error = "Field value 1 expected numeric";
@@ -148,7 +148,7 @@ class Controllers
         };
 
         $result =  "$value1 $operator $value2 = $calc";
-       
+
         view(ViewEnum::BASIC_CALCULATOR, compact('result'));
     }
 }
@@ -237,8 +237,7 @@ if (isGetOnPath(EndPointEnum::BASIC_CALCULATOR)) {
     return;
 }
 
-
-if (isPostOnPath(EndPointEnum::BASIC_CALCULATOR)) {
+if (isGetOnPath(EndPointEnum::BASIC_CALCULATOR_CALC)) {
     Controllers::basicCalculatorController();
     return;
 }
