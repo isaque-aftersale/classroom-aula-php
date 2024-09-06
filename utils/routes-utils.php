@@ -12,16 +12,21 @@ function post(string $key): mixed
 
 function isGetOnPath(string $path)
 {
-    return ($_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI']) === $path && $_SERVER['REQUEST_METHOD'] === "GET";
+    return ($_SERVER['REDIRECT_URL'] ?? $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI']) === $path && $_SERVER['REQUEST_METHOD'] === "GET";
 }
 
 function isPostOnPath(string $path)
 {
-    return ($_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI']) === $path && $_SERVER['REQUEST_METHOD'] === "POST";
+    return ($_SERVER['REDIRECT_URL'] ?? $_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI']) === $path && $_SERVER['REQUEST_METHOD'] === "POST";
 }
 
-enum EndPointEnum
+function redirect(string $uri) {
+    header("Location: $uri");
+}
+
+class EndPointEnum
 {
+    const HOME = "/";
     const MULTIPLICATION_TABLE = '/multiplication-table';
     const MULTIPLICATION_TABLE_CALC = '/multiplication-table/calc';
     const IS_PAR_OR_IMPAR = '/is-par-or-impar';

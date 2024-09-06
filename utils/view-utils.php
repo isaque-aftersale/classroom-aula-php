@@ -1,10 +1,13 @@
 <?php
 
+function loadCss(string $css) {
+    
+}
 
 function view(string $path, array $data = []): void
 {
     extract($data);
-    require_once("./views/$path.php");
+    require_once "./views/$path.php";
 }
 
 function headerTemplate(): void
@@ -19,7 +22,7 @@ function when(bool $value, Closure $callback): ?string
     return $callback($value);
 }
 
-enum ViewEnum
+class ViewEnum
 {
     const MULTIPLICATION_TABLE = 'multiplication-table';
     const IS_PAR_IMPAR = 'is-par-impar';

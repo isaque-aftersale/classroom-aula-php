@@ -1,7 +1,20 @@
 <?php
 
-require_once("./utils/routes-utils.php");
-require_once("./utils/view-utils.php");
+require_once "./utils/routes-utils.php";
+require_once "./utils/view-utils.php";
+
+
+function info($data)
+{
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+}
+function dd(mixed $data): void
+{
+    info($data);
+    exit();
+}
 
 class Controllers
 {
@@ -109,33 +122,38 @@ class Controllers
         $value2 = get('value2');
         $operator = get('operator');
 
-        if (is_numeric($value1)) {
+        if (!is_numeric($value1)) {
             $error = "Field value 1 expected numeric";
             view(ViewEnum::BASIC_CALCULATOR, compact('error'));
         }
 
-        if (is_numeric($value2)) {
+        if (!is_numeric($value2)) {
             $error = "Field value 2 expected numeric";
             view(ViewEnum::BASIC_CALCULATOR, compact('error'));
         }
 
-        if (!empty($value1)) {
+        if (empty($value1)) {
             $error = "Field value 1 is required";
             view(ViewEnum::BASIC_CALCULATOR, compact('error'));
         }
 
-        if (!empty($value2)) {
+        if (empty($value2)) {
             $error = "Field value 2 is required";
             view(ViewEnum::BASIC_CALCULATOR, compact('error'));
         }
 
-        if (!empty($operator)) {
+        if (empty($operator)) {
             $error = "Field operator is required";
             view(ViewEnum::BASIC_CALCULATOR, compact('error'));
         }
 
         $value1 = intval($value1);
         $value2 = intval($value2);
+
+        if ($value1 === 0 && $value2 === 1) {
+            $error = "Dividinzio from zero numeric invalid infinit number";
+            view(ViewEnum::BASIC_CALCULATOR, compact('error'));
+        }
 
         $calc = match ($operator) {
             '+' => $value1 + $value2,
@@ -147,7 +165,7 @@ class Controllers
             default => view(ViewEnum::BASIC_CALCULATOR, ['error' => "Field operator is required"]),
         };
 
-        $result =  "$value1 $operator $value2 = $calc";
+        $result = "$value1 $operator $value2 = $calc";
 
         view(ViewEnum::BASIC_CALCULATOR, compact('result'));
     }
@@ -241,6 +259,17 @@ if (isGetOnPath(EndPointEnum::BASIC_CALCULATOR_CALC)) {
     Controllers::basicCalculatorController();
     return;
 }
+
+if (isGetOnPath(EndPointEnum::CALCULATE_RECTANGLE_AREA)) {
+    view(ViewEnum::CALCULATE_RECTANGLE_AREA);
+    return;
+}
+
+if (isGetOnPath(EndPointEnum::CALCULATE_RECTANGLE_AREA_CALC)) {
+    Controllers::calculateRectangleAreaController();
+    return;
+}
+
 
 echo "404 Not Found";
 headerTemplate();

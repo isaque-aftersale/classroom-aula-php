@@ -1,3 +1,7 @@
+<?php
+    session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +14,7 @@
 <body>
     <?= headerTemplate() ?>
 
-    <form action="<?php EndPointEnum::BASIC_CALCULATOR_CALC ?>" method="GET">
+    <form action="<?= EndPointEnum::BASIC_CALCULATOR_CALC ?>" method="GET">
         <div>
             <label for="value1">Value 1</label>
             <input type="number" id="value1" name="value1" />
@@ -32,6 +36,7 @@
     </form>
 
     <?= when(!empty($result), fn() => $result) ?>
+    <?= when(!empty($error), fn() => $error) ?>
 </body>
 
 </html>
