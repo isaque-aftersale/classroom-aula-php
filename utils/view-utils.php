@@ -12,8 +12,14 @@ function view(string $path, array $data = []): void
 
 function headerTemplate(): void
 {
-    require_once('./views/templates/header.php');
+    require_once './views/templates/header.php';
 }
+
+function footerTemplate(): void
+{
+    require_once './views/templates/footer.php';
+}
+
 
 function when(bool $value, Closure $callback): ?string
 {
